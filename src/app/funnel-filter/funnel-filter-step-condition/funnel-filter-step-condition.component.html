@@ -38,10 +38,10 @@
         matInput
         [type]="operandValueType()"
         formControlName="operand"
-        [placeholder]="isCompareFnComplex() ? 'Min' : 'Value'"
+        [placeholder]="isCompareFunctionComplex() ? 'Min' : 'Value'"
       />
     </mat-form-field>
-    @if(isCompareFnComplex()) {
+    @if(isCompareFunctionComplex()) {
     <mat-form-field>
       <input
         matInput

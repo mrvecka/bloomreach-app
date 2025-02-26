@@ -45,6 +45,7 @@ export class FunnelFilterStepConditionComponent implements OnInit, OnDestroy {
 
   attributeInput = signal<string>('');
   showCompareControls = signal<boolean>(false);
+  isCompareFunctionComplex = signal<boolean>(false);
 
   filteredEventProperties = computed(() => {
     const attributeInput = this.attributeInput();
@@ -138,10 +139,6 @@ export class FunnelFilterStepConditionComponent implements OnInit, OnDestroy {
     }
   }
 
-  isCompareFnComplex() {
-    return this.conditionGroup().get('operator')?.value === 'between';
-  }
-
   private addCompareFunctionHandler(value: string) {
     if (value) {
       const currentFormGroup = this.conditionGroup();
@@ -162,6 +159,7 @@ export class FunnelFilterStepConditionComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((compareFn) => {
         if (compareFn === 'between') {
+          this.isCompareFunctionComplex.set(true);
           if (!currentFormGroup.contains('operand2')) {
             currentFormGroup.addControl(
               'operand2',
@@ -169,6 +167,7 @@ export class FunnelFilterStepConditionComponent implements OnInit, OnDestroy {
             );
           }
         } else {
+          this.isCompareFunctionComplex.set(false);
           currentFormGroup.removeControl('operand2');
         }
       });
