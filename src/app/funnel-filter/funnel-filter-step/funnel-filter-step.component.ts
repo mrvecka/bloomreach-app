@@ -135,6 +135,14 @@ export class FunnelFilterStepComponent implements OnDestroy, OnInit {
     }
   }
 
+  removeAttributeGroup(attributeIndex: number) {
+    if (this.conditions.length === 1) {
+      this.stepForm().removeControl('conditions');
+    } else {
+      this.conditions.removeAt(attributeIndex);
+    }
+  }
+
   addEventCondition() {
     const attributeGroup = this.formBuilder.group({
       attribute: this.formBuilder.control(''),

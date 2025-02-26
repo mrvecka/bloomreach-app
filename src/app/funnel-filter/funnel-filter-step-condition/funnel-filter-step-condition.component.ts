@@ -5,6 +5,7 @@ import {
   input,
   OnDestroy,
   OnInit,
+  output,
   signal,
 } from '@angular/core';
 import {
@@ -20,6 +21,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { Subject, takeUntil } from 'rxjs';
 import { UserEventProperties } from '../event-filter.types';
 import { availableOperators } from '../services/customer-event-filter.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-funnel-filter-step-condition',
@@ -29,6 +32,8 @@ import { availableOperators } from '../services/customer-event-filter.service';
     MatAutocompleteModule,
     MatSelectModule,
     MatInputModule,
+    MatIconModule,
+    MatButtonModule,
   ],
   templateUrl: './funnel-filter-step-condition.component.html',
   styleUrl: './funnel-filter-step-condition.component.scss',
@@ -42,6 +47,8 @@ export class FunnelFilterStepConditionComponent implements OnInit, OnDestroy {
   conditionGroup = input.required<FormGroup>();
   alreadyAssignedAttributes = input.required<string[]>();
   availableUserEventsProperties = input.required<UserEventProperties[]>();
+
+  removeAttributeGroup = output<void>();
 
   attributeInput = signal<string>('');
   showCompareControls = signal<boolean>(false);
@@ -137,6 +144,10 @@ export class FunnelFilterStepConditionComponent implements OnInit, OnDestroy {
       attributeControl?.setValue('');
       this.showCompareControls.set(false);
     }
+  }
+
+  removeAttributeCondition() {
+    this.removeAttributeGroup.emit();
   }
 
   private addCompareFunctionHandler(value: string) {

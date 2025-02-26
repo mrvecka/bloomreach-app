@@ -5,4 +5,12 @@
   .connection {
     align-self: center;
   }
+
+  .remove-attribute-action {
+    display: none;
+  }
+}
+
+.condition-container:hover > .remove-attribute-action {
+  display: block;
 }

@@ -39,14 +39,15 @@
     </mat-form-field>
     @if(stepForm().contains('conditions')) {
     <div formArrayName="conditions">
-      @for(conditionField of conditions.controls; let iCondition = $index; track
-      conditionField) {
+      @for(conditionField of conditions.controls; let conditionIndex = $index;
+      track conditionField) {
 
       <app-funnel-filter-step-condition
-        [conditionIndex]="iCondition"
+        [conditionIndex]="conditionIndex"
         [conditionGroup]="conditionField"
         [availableUserEventsProperties]="getAvailableEventAttributes()"
         [alreadyAssignedAttributes]="alreadyAssignedEventAttributes()"
+        (removeAttributeGroup)="removeAttributeGroup(conditionIndex)"
       ></app-funnel-filter-step-condition>
       }
       <button mat-button (click)="addEventCondition()">Refine more</button>
