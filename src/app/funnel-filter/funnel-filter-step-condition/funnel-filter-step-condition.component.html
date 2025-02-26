@@ -1,0 +1,55 @@
+<form [formGroup]="conditionGroup()">
+  <div class="condition-container">
+    @if(conditionIndex() > 0) {
+    <span class="connection">and</span>
+    }
+    <mat-form-field>
+      <input
+        type="text"
+        placeholder="Select event attribute"
+        matInput
+        formControlName="attribute"
+        [matAutocomplete]="auto"
+        (blur)="clearEvent()"
+      />
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="eventAttributeSelected($event.option.value)"
+      >
+        @for (option of filteredEventProperties(); track option) {
+        <mat-option [value]="option.property">{{ option.property }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+
+    @if(showCompareControls()) {
+    <mat-form-field>
+      <mat-select formControlName="operator" placeholder="Select operator">
+        @for (compareFn of availableAttributeOperators(); track compareFn) {
+        <mat-option [value]="compareFn.value">{{
+          compareFn.viewValue
+        }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        [type]="operandValueType()"
+        formControlName="operand"
+        [placeholder]="isCompareFnComplex() ? 'Min' : 'Value'"
+      />
+    </mat-form-field>
+    @if(isCompareFnComplex()) {
+    <mat-form-field>
+      <input
+        matInput
+        [type]="operandValueType()"
+        formControlName="operand2"
+        placeholder="Max"
+      />
+    </mat-form-field>
+    } }
+  </div>
+</form>

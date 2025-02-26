@@ -1,0 +1,63 @@
+<div [formGroup]="stepForm()" class="step-wrapper">
+  <div class="step-header">
+    <div class="step-title">
+      <span>{{ stepFormOrder() }}. Step: {{ stepFormName() }}</span>
+      <button mat-icon-button (click)="editStepName()">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+    <div class="step-actions">
+      @if (stepFormOrder() > 1) {
+      <button mat-icon-button (click)="deleteStep()">
+        <mat-icon>delete</mat-icon>
+      </button>
+      }
+      <button mat-icon-button (click)="copyStep()">
+        <mat-icon>content_copy</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="step-content">
+    <mat-form-field class="event-type-field">
+      <input
+        type="text"
+        placeholder="Select an event"
+        matInput
+        formControlName="eventType"
+        [matAutocomplete]="auto"
+        (blur)="clearEvent()"
+      />
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="eventSelected($event)"
+      >
+        @for (option of filteredEventsByInput(); track option) {
+        <mat-option [value]="option">{{ option }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+    @if(stepForm().contains('conditions')) {
+    <div formArrayName="conditions">
+      @for(conditionField of conditions.controls; let iCondition = $index; track
+      conditionField) {
+
+      <app-funnel-filter-step-condition
+        [conditionIndex]="iCondition"
+        [conditionGroup]="conditionField"
+        [availableUserEventsProperties]="getAvailableEventAttributes()"
+        [alreadyAssignedAttributes]="alreadyAssignedEventAttributes()"
+      ></app-funnel-filter-step-condition>
+      }
+      <button mat-button (click)="addEventCondition()">Refine more</button>
+      <span>{{ alreadyAssignedEventAttributes() }}</span>
+    </div>
+
+    } @else if (allowAddConditionButton()) {
+    <button mat-button (click)="addEventCondition()">
+      + Add event attribute
+    </button>
+
+    }
+  </div>
+</div>

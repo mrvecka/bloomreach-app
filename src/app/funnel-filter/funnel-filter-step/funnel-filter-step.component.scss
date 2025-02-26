@@ -1,0 +1,49 @@
+.event-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.step-wrapper:hover {
+  .step-actions {
+    display: block;
+  }
+}
+
+.condition-container {
+  display: flex;
+  gap: 1rem;
+
+  .connection {
+    align-self: center;
+  }
+}
+
+.step-wrapper {
+  display: block;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+
+  .step-actions {
+    display: none;
+  }
+}
+
+.step-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .step-title {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.step-content {
+  display: flex;
+  gap: 1rem;
+}
+
+.event-type-field {
+  align-self: flex-start;
+}
