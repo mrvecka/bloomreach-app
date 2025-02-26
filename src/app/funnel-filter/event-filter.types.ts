@@ -17,7 +17,7 @@ export interface EventFilterStep {
   order: number;
   name: string;
   eventType?: string;
-  conditions?: EventFilterCondition[];
+  attributes?: EventFilterCondition[];
 }
 
 export interface UserEventProperties {

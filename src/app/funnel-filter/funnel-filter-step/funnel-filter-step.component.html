@@ -37,21 +37,20 @@
         }
       </mat-autocomplete>
     </mat-form-field>
-    @if(stepForm().contains('conditions')) {
-    <div formArrayName="conditions">
-      @for(conditionField of conditions.controls; let conditionIndex = $index;
-      track conditionField) {
+    @if(stepForm().contains('attributes')) {
+    <div formArrayName="attributes">
+      @for(attributeField of attributesGroup.controls; let attributeIndex =
+      $index; track attributeField) {
 
       <app-funnel-filter-step-condition
-        [conditionIndex]="conditionIndex"
-        [conditionGroup]="conditionField"
+        [conditionIndex]="attributeIndex"
+        [conditionGroup]="attributeField"
         [availableUserEventsProperties]="getAvailableEventAttributes()"
         [alreadyAssignedAttributes]="alreadyAssignedEventAttributes()"
-        (removeAttributeGroup)="removeAttributeGroup(conditionIndex)"
+        (removeAttributeGroup)="removeAttributeGroup(attributeIndex)"
       ></app-funnel-filter-step-condition>
       }
       <button mat-button (click)="addEventCondition()">Refine more</button>
-      <span>{{ alreadyAssignedEventAttributes() }}</span>
     </div>
 
     } @else if (allowAddConditionButton()) {

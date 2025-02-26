@@ -10,7 +10,7 @@ import {
 import { MatListModule } from '@angular/material/list';
 import { FunnelFilterStepComponent } from './funnel-filter-step/funnel-filter-step.component';
 
-type ConditionFormGroup = Partial<{
+type AttributeFormGroup = Partial<{
   attribute: string;
   operator: string;
   operand: string;
@@ -55,28 +55,30 @@ export class FunnelFilterComponent {
   }
 
   copyStep(index: number) {
-    const newConditionGroup = this.getStepForm(this.stepsFormArray.length + 1);
+    const newAttributeFormGroup = this.getStepForm(
+      this.stepsFormArray.length + 1
+    );
 
     const stepToCopy = this.stepsFormArray.at(index).value;
-    if (stepToCopy.conditions) {
-      const existingAttributes = stepToCopy.conditions.map(
-        (conditionGroup: ConditionFormGroup) => {
-          const attributeConditionGroup =
-            this.createConditionFormGroupFromStep(conditionGroup);
+    if (stepToCopy.attributes) {
+      const existingAttributes = stepToCopy.attributes.map(
+        (attributeGroup: AttributeFormGroup) => {
+          const attributeFormGroupCopy =
+            this.createAttributeFormGroupFromStep(attributeGroup);
 
-          return attributeConditionGroup;
+          return attributeFormGroupCopy;
         }
       );
 
-      newConditionGroup.addControl<any>(
-        'conditions',
+      newAttributeFormGroup.addControl<any>(
+        'attributes',
         this.formBuilder.array([...existingAttributes])
       );
     }
 
-    this.stepsFormArray.push(newConditionGroup);
+    this.stepsFormArray.push(newAttributeFormGroup);
 
-    newConditionGroup.patchValue({
+    newAttributeFormGroup.patchValue({
       ...stepToCopy,
       order: this.stepsFormArray.value.length,
       name: 'Unnamed Step',
@@ -97,7 +99,7 @@ export class FunnelFilterComponent {
     });
   }
 
-  private createConditionFormGroupFromStep(conditionGroup: ConditionFormGroup) {
+  private createAttributeFormGroupFromStep(conditionGroup: AttributeFormGroup) {
     const attributeGroup = this.formBuilder.group<any>({
       attribute: this.formBuilder.control(conditionGroup.attribute),
     });

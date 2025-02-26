@@ -86,8 +86,8 @@ export class FunnelFilterStepComponent implements OnDestroy, OnInit {
     );
   });
 
-  get conditions() {
-    return this.stepForm().get('conditions') as FormArray<FormGroup>;
+  get attributesGroup() {
+    return this.stepForm().get('attributes') as FormArray<FormGroup>;
   }
 
   get availableUserEvents() {
@@ -95,9 +95,9 @@ export class FunnelFilterStepComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    if (this.conditions) {
-      this.setAlreadyAssignedAttributes(this.conditions.value);
-      this.setupAlreadyAssignedAttributeWatcher(this.conditions);
+    if (this.attributesGroup) {
+      this.setAlreadyAssignedAttributes(this.attributesGroup.value);
+      this.setupAlreadyAssignedAttributeWatcher(this.attributesGroup);
     }
 
     this.stepForm()
@@ -136,10 +136,10 @@ export class FunnelFilterStepComponent implements OnDestroy, OnInit {
   }
 
   removeAttributeGroup(attributeIndex: number) {
-    if (this.conditions.length === 1) {
-      this.stepForm().removeControl('conditions');
+    if (this.attributesGroup.length === 1) {
+      this.stepForm().removeControl('attributes');
     } else {
-      this.conditions.removeAt(attributeIndex);
+      this.attributesGroup.removeAt(attributeIndex);
     }
   }
 
@@ -148,12 +148,12 @@ export class FunnelFilterStepComponent implements OnDestroy, OnInit {
       attribute: this.formBuilder.control(''),
     });
 
-    if (this.stepForm().contains('conditions')) {
-      this.conditions.push(attributeGroup);
+    if (this.stepForm().contains('attributes')) {
+      this.attributesGroup.push(attributeGroup);
     } else {
-      const conditionsArray = this.formBuilder.array([attributeGroup]);
-      this.stepForm().addControl('conditions', conditionsArray);
-      this.setupAlreadyAssignedAttributeWatcher(conditionsArray);
+      const attributesArray = this.formBuilder.array([attributeGroup]);
+      this.stepForm().addControl('attributes', attributesArray);
+      this.setupAlreadyAssignedAttributeWatcher(attributesArray);
     }
   }
 
@@ -167,8 +167,8 @@ export class FunnelFilterStepComponent implements OnDestroy, OnInit {
 
   editStepName() {}
 
-  private setupAlreadyAssignedAttributeWatcher(conditionsArray: FormArray) {
-    conditionsArray.valueChanges
+  private setupAlreadyAssignedAttributeWatcher(attributesArray: FormArray) {
+    attributesArray.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         this.setAlreadyAssignedAttributes(value);
@@ -176,10 +176,10 @@ export class FunnelFilterStepComponent implements OnDestroy, OnInit {
   }
 
   private setAlreadyAssignedAttributes(
-    conditionsArray: { attribute: string }[]
+    attributesArray: { attribute: string }[]
   ) {
     this.alreadyAssignedEventAttributes.set(
-      conditionsArray.map(
+      attributesArray.map(
         (conditionGroup: { attribute: string }) =>
           conditionGroup.attribute ?? ''
       )
